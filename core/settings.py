@@ -37,12 +37,12 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 #     "http://127.0.0.1:5173/"
 # ]
 
-if DEBUG:
-    CORS_ALLOWED_ORIGINS = [
-    config("ALLOWED_HOSTS"),
-    # "http://localhost:5173/",
-    # "http://127.0.0.1:5173/"
-    ]
+# if DEBUG:
+CORS_ALLOWED_ORIGINS = [
+config("ALLOWED_HOSTS"),
+# "http://localhost:5173/",
+# "http://127.0.0.1:5173/"
+]
 
 # Application definition
 
