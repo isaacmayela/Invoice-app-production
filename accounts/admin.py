@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, EmailConfirmationToken
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.models import Group
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
@@ -20,7 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active', 'is_superuser','date_joined')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active', 'is_superuser','date_joined', 'get_groups')
     list_filter = ('is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -39,30 +39,11 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
+    def get_groups(self, obj):
+        return ", ".join([group.name for group in obj.groups.all()])
+    get_groups.short_description = 'Groups'
+    
 
-
-# class CustomUserAdmin(UserAdmin):
-#     model = CustomUser
-#     list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active')
-#     list_filter = ('is_staff', 'is_active')
-#     fieldsets = (
-#         (None, {'fields': ('email', 'password')}),
-#         ('Personal Info', {'fields': ('first_name', 'last_name')}),
-#         ('Permissions', {'fields': ('is_staff', 'is_active')}),
-#         ('Important dates', {'fields': ('last_login',)}),
-#     )
-#     add_fieldsets = (
-#         (None, {
-#             'classes': ('wide',),
-#             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
-#         ),
-#     )
-#     search_fields = ('email', 'first_name', 'last_name')
-#     ordering = ('email',)
-#     form = CustomUserChangeForm
-#     add_form = CustomUserCreationForm
-
-
+# admin.site.unregister(Group)
 admin.site.register(EmailConfirmationToken)
-
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser)

@@ -10,6 +10,7 @@ class Company(models.Model):
     adress = models.CharField(max_length=255)
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, default="Kinshasa")
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
     save_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -30,6 +31,7 @@ class Customer(models.Model):
     type =models.CharField(max_length=30)
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT)
     save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     class Meta:
         verbose_name = "Customer"
@@ -52,6 +54,7 @@ class Invoice(models.Model):
     total = models.DecimalField(max_digits=10000, decimal_places=2)
     last_updated_date = models.DateTimeField(null=True, blank=True)
     paid  = models.BooleanField(default=False)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT)
     comments = models.TextField(null=True, max_length=1000, blank=True)
 
     class Meta:

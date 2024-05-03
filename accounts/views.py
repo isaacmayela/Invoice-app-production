@@ -13,13 +13,32 @@ from django.template.loader import render_to_string
 # import jwt, datetime
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import (CustomTokenObtainPairSerializer, RegisterSerializer, EmailConfirmationSerializer, 
-RendedEmailConfirmationSerializer, ChangePasswordSerializer)
+RendedEmailConfirmationSerializer, ChangePasswordSerializer, LogoutSerializer)
 from .models import EmailConfirmationToken, CustomUser
 from .utils import validate_email_token
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+class LogoutView(GenericAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = LogoutSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        refresh_token = serializer.validated_data.get('refresh')
+        
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({'success': 'User logged out successfully'}, status=status.HTTP_200_OK)
 
 # class LoginView(GenericAPIView):
 

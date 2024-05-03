@@ -81,6 +81,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 #     user_type = serializers.CharField(source='employee_type')
 #     number = serializers.CharField()
         
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
         
 class RegisterSerializer(serializers.Serializer):
     # username = serializers.CharField(max_length=100)
