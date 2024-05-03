@@ -28,14 +28,11 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.100', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app']
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174"
+    "https://invoice-app-orpin.vercel.app/"
     ]
 
 # Application definition
