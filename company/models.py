@@ -76,8 +76,8 @@ class Article(models.Model):
     unity = models.CharField(max_length=10)
     name = models.CharField(max_length=32)
     quantity = models.IntegerField()
-    unit_price = models.DecimalField(max_digits=1000, decimal_places=2)
-    total = models.DecimalField(max_digits=1000, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=15, decimal_places=2)
+    total = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
         verbose_name = 'Article'
