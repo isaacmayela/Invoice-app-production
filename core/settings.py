@@ -30,18 +30,23 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
-# ALLOWED_HOSTS = [
-#     "http://localhost:5173/",
-#     "http://127.0.0.1:5173/"
-# ]
+ALLOWED_HOSTS = [
+    config("ALLOWED_HOSTS"),
+    # "http://127.0.0.1:5173/"
+]
 
 # if DEBUG:
+# CORS_ALLOWED_ORIGINS = [
+# config("ALLOWED_HOSTS"),
+# # "http://localhost:5173/",
+# # "http://127.0.0.1:5173/"
+# ]
+
 CORS_ALLOWED_ORIGINS = [
-config("ALLOWED_HOSTS"),
-# "http://localhost:5173/",
-# "http://127.0.0.1:5173/"
+    config("ALLOWED_HOSTS"),
+    # "https://example.com",
 ]
 
 # Application definition
