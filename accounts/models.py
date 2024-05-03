@@ -32,7 +32,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
             reply_to=[from_email],
             headers={'Content-Type': 'text/plain'},
         )
-        # email.send()
+        email.send()
 
     @property
     def _default_manager(self):
