@@ -34,7 +34,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
-    "https://invoice-app-orpin.vercel.app"
+    config("ALLOWED_HOSTS"),
     ]
 
 # Application definition
