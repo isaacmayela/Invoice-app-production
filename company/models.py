@@ -5,12 +5,11 @@ from accounts.models import CustomUser
 import random
 import string
 
+def generate_id_number():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
 class Company(models.Model):
-
-    @staticmethod
-    def generate_id_number():
-        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
-
+    
     name = models.CharField(max_length=132)
     email = models.EmailField()
     phone = models.CharField(max_length=132)
@@ -29,10 +28,6 @@ class Company(models.Model):
         return self.name
 
 class Customer(models.Model):
-
-    @staticmethod
-    def generate_id_number():
-        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
 
     name = models.CharField(max_length=132)
     email = models.EmailField()
@@ -61,10 +56,6 @@ class Invoice(models.Model):
         ('I', ('INVOICE'))
     )
 
-    @staticmethod
-    def generate_id_number():
-        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
-
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     concern = models.CharField(max_length=200, default="nothing")
     save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
@@ -91,10 +82,6 @@ class Invoice(models.Model):
 
 class Article(models.Model):
 
-    @staticmethod
-    def generate_id_number():
-        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
-
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     details = models.CharField(max_length=60, default="nothing")
     unity = models.CharField(max_length=10)
@@ -110,6 +97,6 @@ class Article(models.Model):
 
     @property
     def get_total(self):
-        total = self.quantity * self.unit_price   
+        total = self.quantity * self.unit_price 
         return total
     

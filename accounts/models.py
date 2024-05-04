@@ -12,11 +12,10 @@ import string
 
 # Create your models here.
 
-class CustomUser(AbstractUser, PermissionsMixin):
+def generate_id_number():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
 
-    @staticmethod
-    def generate_id_number():
-        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+class CustomUser(AbstractUser, PermissionsMixin):
 
     email = models.EmailField(_("email address"), unique=True)
     username = models.CharField(max_length=200, default="username")
