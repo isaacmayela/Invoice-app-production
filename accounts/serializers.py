@@ -160,3 +160,14 @@ class ChangePasswordSerializer(serializers.Serializer):
     #     else:
     #         self._errors = self.set_password_form.errors
     #         raise serializers.ValidationError("Erreur lors du changement de mot de passe.")
+
+
+class AddCollaboratorsSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    first_name = serializers.CharField(max_length=100)
+    last_name = serializers.CharField(max_length=100)
+
+    def validate_email(self, value):
+        if CustomUser.objects.filter(email=value).first():
+            raise serializers.ValidationError("An account using this email already exists.")
+        return value

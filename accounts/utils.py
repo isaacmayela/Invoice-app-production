@@ -11,6 +11,11 @@ def generate_username (first_name):
     username = first_name + "".join(random.choices(chars, k=12))
     return username
 
+def generate_password (first_name):
+    chars=string.ascii_uppercase + string.digits + "!@#$%^&*()_+}/{[]" + string.ascii_lowercase
+    password = "".join(random.choices(chars, k=8))
+    return password
+
 logger = logging.getLogger(__name__)
 def send_email_confirmation(subject:str, receivers: list, template:str, context:dict):
     """This function sends emails to specific users"""

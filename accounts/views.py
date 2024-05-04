@@ -1,6 +1,5 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
-# from .serializers import LoginSerializer, RegisterSerializer, EmailConfirmationSerializer, RendedEmailConfirmationSerializer, CustomTokenObtainPairSerializer
 from rest_framework.response import Response
 from rest_framework import status
 # from rest_framework.authtoken.models import Token
@@ -12,9 +11,9 @@ from django.template.loader import render_to_string
 # import jwt, datetime
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import (CustomTokenObtainPairSerializer, RegisterSerializer, EmailConfirmationSerializer, 
-RendedEmailConfirmationSerializer, ChangePasswordSerializer, LogoutSerializer)
+RendedEmailConfirmationSerializer, ChangePasswordSerializer, LogoutSerializer, AddCollaboratorsSerializer)
 from .models import EmailConfirmationToken, CustomUser
-from .utils import validate_email_token
+from .utils import validate_email_token, generate_password
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from decouple import config
@@ -230,4 +229,37 @@ class ChangePasswordAPIView(GenericAPIView):
         return Response({'message': 'Password has been chagnge succifuly.'}, status=status.HTTP_200_OK)
 
 
+class AddCollaborators(GenericAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = AddCollaboratorsSerializer
+    CORS_ORIGINS = config("CORS_ORIGINS")
+
+    def post(self, request, *args, **kwargs):
+
+        admin = request.user
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        first_name = serializer.validated_data['first_name']
+        last_name = serializer.validated_data['last_name']
+
+        user = CustomUser.objects.create(email=email, password=generate_password(), first_name= first_name, last_name= last_name)
+        user.is_active = True
+        user.save()
+
+        confirmation_url = f"""{admin.first_name} {admin.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
+                               Votre mot de passe temporaire est: {user.password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login"""
+
+        subject = "Email d'invitation"
+
+        user.email_user(subject, confirmation_url, settings.EMAIL_HOST_USER, **kwargs)
+
+        return Response({"message": "The account has been successfully registered", "email":user.email}, status=status.HTTP_201_CREATED)
+
+        
+
+
+        
     
