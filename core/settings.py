@@ -31,16 +31,16 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 # DEBUG = True
 
-# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
-ALLOWED_HOSTS = [
-    config("ALLOWED_HOSTS"),
-    # "http://127.0.0.1:5173/"
-]
+# ALLOWED_HOSTS = [
+#     config("ALLOWED_HOSTS"),
+#     # "http://127.0.0.1:5173/"
+# ]
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
-    config("ALLOWED_HOSTS"),
+    config("CORS_ORIGINS"),
 # "http://localhost:5173/",
 # "http://127.0.0.1:5173/"
 ]
