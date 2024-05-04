@@ -31,4 +31,4 @@ urlpatterns = [
     path('core/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('core/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('core/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-] + static(settings.STATIC_URL, document_root= settings.STATICFILES_DIRS)
+] + static(settings.STATIC_URL, document_root= settings.STATIC_ROOT)
