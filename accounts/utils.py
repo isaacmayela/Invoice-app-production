@@ -11,7 +11,7 @@ def generate_username (first_name):
     username = first_name + "".join(random.choices(chars, k=12))
     return username
 
-def generate_password (first_name):
+def generate_password ():
     chars=string.ascii_uppercase + string.digits + "!@#$%^&*()_+}/{[]" + string.ascii_lowercase
     password = "".join(random.choices(chars, k=8))
     return password
