@@ -29,7 +29,7 @@ from decouple import config
 APP_CONFIGS = config("APP_CONFIGS")
 
 urlpatterns = [
-    path(APP_CONFIGS, admin.site.urls),
+    path("boyangeli/J3!7b1a?57M9c1_f0/", admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('company/', include('company.urls')),
     path('core/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
