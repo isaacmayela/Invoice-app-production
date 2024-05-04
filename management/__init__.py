@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
     CREDENTIALS = os.environ.get("SUPERUSER_CREDENTIALS").split(",")
 
-    print(CREDENTIALS)
+    # print(CREDENTIALS)
 
     def handle(self, *args, **kwargs):
         if not User.objects.filter(username='admin').exists():
