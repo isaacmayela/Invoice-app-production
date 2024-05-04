@@ -109,7 +109,7 @@ class RegisterView(GenericAPIView):
         # print(email_token)
 
         confirmation_url = f"""Félicitation, vous venez de creer votre compte ! 
-        Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/email-verification/{email_token.id}/"""
+                               Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/email-verification/{email_token.id}/"""
 
         subject = "Email de confirmation"
 
@@ -171,6 +171,7 @@ class EmailConfirmationView(GenericAPIView):
 class RendedEmailConfirmationView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RendedEmailConfirmationSerializer
+    CORS_ORIGINS = config("CORS_ORIGINS")
 
     def post(self, request, *args, **kwargs):
 
@@ -191,11 +192,11 @@ class RendedEmailConfirmationView(GenericAPIView):
                 "token_type" : "verification"
             })
 
-            confirmation_url = f'http://127.0.0.1:8000/accounts/email_confirm/{email_token.id}/'
+            confirmation_url = f"Confirmez votre identité en cliquant sur ce lien {self.CORS_ORIGINS}/changePassword/{email_token.id}/"
             subject = "Email de confirmation"
             message =  render_to_string("index.html", {'confirmation_url': confirmation_url})
 
-            user.email_user(subject, message, settings.EMAIL_HOST_USER, **kwargs)
+            user.email_user(subject, confirmation_url, settings.EMAIL_HOST_USER, **kwargs)
             print("token",email_token.id)
 
         except CustomUser.DoesNotExist:
