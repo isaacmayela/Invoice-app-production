@@ -2,8 +2,15 @@ from django.db import models
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from accounts.models import CustomUser
+import random
+import string
 
 class Company(models.Model):
+
+    @staticmethod
+    def generate_id_number():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
     name = models.CharField(max_length=132)
     email = models.EmailField()
     phone = models.CharField(max_length=132)
@@ -13,6 +20,7 @@ class Company(models.Model):
     state = models.CharField(max_length=100, default="Kinshasa")
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
+    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     save_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Company"
@@ -21,6 +29,11 @@ class Company(models.Model):
         return self.name
 
 class Customer(models.Model):
+
+    @staticmethod
+    def generate_id_number():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
     name = models.CharField(max_length=132)
     email = models.EmailField()
     phone = models.CharField(max_length=132)
@@ -32,6 +45,7 @@ class Customer(models.Model):
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
+    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     class Meta:
         verbose_name = "Customer"
@@ -47,14 +61,19 @@ class Invoice(models.Model):
         ('I', ('INVOICE'))
     )
 
+    @staticmethod
+    def generate_id_number():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     concern = models.CharField(max_length=200, default="nothing")
     save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     invoice_date_time = models.DateTimeField(auto_now_add=True)
-    total = models.DecimalField(max_digits=10000, decimal_places=2)
+    total = models.FloatField()
     last_updated_date = models.DateTimeField(null=True, blank=True)
     paid  = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
+    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     comments = models.TextField(null=True, max_length=1000, blank=True)
 
     class Meta:
@@ -71,12 +90,18 @@ class Invoice(models.Model):
         return total   
 
 class Article(models.Model):
+
+    @staticmethod
+    def generate_id_number():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     details = models.CharField(max_length=60, default="nothing")
     unity = models.CharField(max_length=10)
     name = models.CharField(max_length=32)
     quantity = models.IntegerField()
     unit_price = models.FloatField()
+    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     total = models.FloatField()
 
     class Meta:

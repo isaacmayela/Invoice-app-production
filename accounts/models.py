@@ -7,18 +7,22 @@ from .manager import UserManager
 from django.utils import timezone
 from django.core.mail import EmailMessage
 from django.utils.translation import gettext_lazy as _
+import random
+import string
 
 # Create your models here.
 
 class CustomUser(AbstractUser, PermissionsMixin):
 
+    @staticmethod
+    def generate_id_number():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
     email = models.EmailField(_("email address"), unique=True)
     username = models.CharField(max_length=200, default="username")
-
+    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-
     objects = UserManager()
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
