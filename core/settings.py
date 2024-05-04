@@ -37,17 +37,17 @@ ALLOWED_HOSTS = [
     # "http://127.0.0.1:5173/"
 ]
 
-# if DEBUG:
-# CORS_ALLOWED_ORIGINS = [
-# config("ALLOWED_HOSTS"),
-# # "http://localhost:5173/",
-# # "http://127.0.0.1:5173/"
-# ]
-
-CORS_ALLOWED_ORIGINS = [
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
     config("ALLOWED_HOSTS"),
-    # "https://example.com",
+# "http://localhost:5173/",
+# "http://127.0.0.1:5173/"
 ]
+
+# CORS_ALLOWED_ORIGINS = [
+#     config("ALLOWED_HOSTS"),
+#     # "https://example.com",
+# ]
 
 # Application definition
 
@@ -132,6 +132,12 @@ DATABASES = {
 }
 
 database_url = os.environ.get("DATABASE_URL")
+
+# DATABASES = {
+#     'default': {
+#         dj_database_url.parse(database_url)
+#     }
+# }
 
 DATABASES['default'] = dj_database_url.parse(database_url)
 
