@@ -119,7 +119,7 @@ class RegisterView(GenericAPIView):
 
         message =  render_to_string(template, context)
 
-        user.email_user(subject, message, settings.EMAIL_HOST_USER, **kwargs)
+        user.email_user(subject, confirmation_url, settings.EMAIL_HOST_USER, **kwargs)
 
         # email = EmailMessage(
         #     subject = subject,
