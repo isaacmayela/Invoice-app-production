@@ -121,16 +121,6 @@ class RegisterView(GenericAPIView):
 
         user.email_user(subject, confirmation_url, settings.EMAIL_HOST_USER, **kwargs)
 
-        # email = EmailMessage(
-        #     subject = subject,
-        #     body=message,
-        #     from_email=settings.EMAIL_HOST_USER,
-        #     to=[user.email],
-        #     reply_to=[settings.EMAIL_HOST_USER],
-        #     headers={'Content-Type': 'text/plain'},
-        # )
-        # # email.send()
-
         return Response({"message": "The account has been successfully registered", "email":user.email}, status=status.HTTP_201_CREATED)
 
 
