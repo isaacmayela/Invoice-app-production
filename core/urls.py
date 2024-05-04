@@ -24,8 +24,12 @@ from rest_framework_simplejwt.views import(
     TokenVerifyView
 )
 
+from decouple import config
+
+APP_CONFIGS = config("APP_CONFIGS")
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{APP_CONFIGS}', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('company/', include('company.urls')),
     path('core/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
