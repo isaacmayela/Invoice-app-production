@@ -105,7 +105,7 @@ class RegisterView(GenericAPIView):
             "token_type" : "activation"
         })
 
-        print(email_token)
+        # print(email_token)
 
         confirmation_url = f'http://127.0.0.1:8000/accounts/email_confirm/{email_token.id}/'
 

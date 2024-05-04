@@ -33,6 +33,8 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
+# print(ALLOWED_HOSTS)
+
 # ALLOWED_HOSTS = [
 #     config("ALLOWED_HOSTS"),
 #     # "http://127.0.0.1:5173/"
