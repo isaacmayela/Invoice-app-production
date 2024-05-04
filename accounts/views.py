@@ -109,7 +109,7 @@ class RegisterView(GenericAPIView):
         # print(email_token)
 
         confirmation_url = f"""Félicitation, vous venez de creer votre compte ! 
-        Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/accounts/email_confirm/{email_token.id}/"""
+        Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/email-verification/{email_token.id}/"""
 
         subject = "Email de confirmation"
 
