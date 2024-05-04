@@ -20,7 +20,8 @@ class Company(models.Model):
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
     id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
-    save_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    save_by = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='created_models')
+    users = models.ManyToManyField(CustomUser, related_name='related_models')
     class Meta:
         verbose_name = "Company"
         verbose_name_plural = "Companies"
@@ -41,7 +42,7 @@ class Customer(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
     id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
-    save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    save_by = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
     class Meta:
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
