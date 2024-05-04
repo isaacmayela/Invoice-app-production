@@ -6,7 +6,6 @@ from rest_framework import status
 # from rest_framework.authtoken.models import Token
 # from .utils import generate_username, send_email_confirmation, validate_email_token
 # from .models import EmailConfirmationProfile, EmailConfirmationToken
-# from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 # from django.contrib.auth.models import User
@@ -18,6 +17,7 @@ from .models import EmailConfirmationToken, CustomUser
 from .utils import validate_email_token
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from decouple import config
 
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -95,6 +95,7 @@ class RegisterView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
     throttle_scope = 'accounts'
+    CORS_ORIGINS = config("CORS_ORIGINS")
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -107,7 +108,8 @@ class RegisterView(GenericAPIView):
 
         # print(email_token)
 
-        confirmation_url = f'http://127.0.0.1:8000/accounts/email_confirm/{email_token.id}/'
+        confirmation_url = f"""Félicitation, vous venez de creer votre compte ! 
+        Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/accounts/email_confirm/{email_token.id}/"""
 
         subject = "Email de confirmation"
 
