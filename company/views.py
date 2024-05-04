@@ -15,11 +15,13 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
     lookup_field = "pk"
 
     def perform_create(self, serializer):
-        serializer.save(save_by=self.request.user)
+        # serializer.save(save_by=self.request.user)
+        company = serializer.save(save_by=self.request.user)
+        company.users.add(self.request.user)
 
     def get_queryset(self):
         user = self.request.user
-        return Company.objects.filter(save_by=user)
+        return Company.objects.filter(users=user)
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")

@@ -18,6 +18,7 @@ from .utils import validate_email_token
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from decouple import config
+from django.contrib.auth.models import Group, Permission
 
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -101,7 +102,10 @@ class RegisterView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        # EmailConfirmationProfile.objects.get_or_create(user=user)
+
+        group = Group.objects.get(name='administrator')
+        user.groups.add(group)
+
         email_token, created = EmailConfirmationToken.objects.get_or_create(user=user, defaults={
             "token_type" : "activation"
         })
