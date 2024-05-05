@@ -9,6 +9,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import CustomUser
 from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from django.utils.translation import gettext_lazy as _
+import random
+import string
 
 # # User = settings.AUTH_USER_MODEL
 
@@ -83,6 +85,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
+
+def generate_id_number():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
         
 class RegisterSerializer(serializers.Serializer):
     # username = serializers.CharField(max_length=100)
@@ -105,13 +110,15 @@ class RegisterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        id_number = validated_data.get('id_number')
+        id_number = generate_id_number()
+        validated_data['id_number'] = id_number
+        attachement = id_number
+        validated_data['attachement'] = attachement
 
         user = CustomUser.objects.create_user(
             **validated_data
         )
 
-        user.attachement = id_number
         user.is_active = False
         user.save()
 

@@ -19,6 +19,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from decouple import config
 from django.contrib.auth.models import Group, Permission
 
+
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
