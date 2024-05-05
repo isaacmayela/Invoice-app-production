@@ -84,18 +84,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
         
-class RegisterSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.Serializer):
     # username = serializers.CharField(max_length=100)
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
-    id_number = serializers
     password = serializers.CharField(max_length=80, style={'input_type': 'password'})
-
-    class Meta:
-        model = CustomUser
-        fields = ['email','first_name','last_name', 'id_number', 'password']
-
 
     def validate_email(self, value):
         if CustomUser.objects.filter(email=value).first():
