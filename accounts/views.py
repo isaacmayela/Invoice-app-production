@@ -1,5 +1,6 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView
+from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework import status
 # from rest_framework.authtoken.models import Token
@@ -112,8 +113,9 @@ class RegisterView(GenericAPIView):
 
         # print(email_token)
 
-        confirmation_url = f"""Félicitation, vous venez de creer votre compte ! 
-                               Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/email-verification/{email_token.id}/"""
+        confirmation_url = f"""
+        Félicitation, vous venez de creer votre compte ! 
+        Veuiller confirmer vos informations en cliquant sur ce lien {self.CORS_ORIGINS}/email-verification/{email_token.id}/"""
 
         subject = "Email de confirmation"
 
@@ -186,7 +188,7 @@ class RendedEmailConfirmationView(GenericAPIView):
                 "token_type" : "verification"
             })
 
-            confirmation_url = f"Confirmez votre identité en cliquant sur ce lien {self.CORS_ORIGINS}/changePassword/{email_token.id}/"
+            confirmation_url = f"Veuillez Confirmer votre identité en cliquant sur ce lien {self.CORS_ORIGINS}/changePassword/{email_token.id}/"
             subject = "Email de confirmation"
             message =  render_to_string("index.html", {'confirmation_url': confirmation_url})
 
@@ -286,6 +288,61 @@ class GetCreatedUsers(ListAPIView):
             return Response(serializer.data)
         else:
             return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
+        
+
+class CompanyView(GenericAPIView,
+    mixins.ListModelMixin,mixins.DestroyModelMixin, mixins.RetrieveModelMixin):
+    
+    queryset = CustomUser.objects.all()
+    # serializer_class = CompanySerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+
+    queryset = CustomUser.objects.all()
+    serializer_class = CreatedUserSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+
+
+    # def get_queryset(self):
+    #     user = self.request.user
+
+    #     if user.groups.filter(name='administrator').exists() or user.is_superuser:
+    #         return CustomUser.objects.filter(attachement=user.id_number)
+    #     else:
+    #         return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
+
+    # def get(self, request, *args, **kwargs):
+    #     pk = kwargs.get("id_number")
+
+    #     if pk is not None: 
+    #         return self.retrieve(request, *args, **kwargs)    
+         
+    #     return self.list(request, *args, **kwargs)
+    
+
+    def get_queryset(self):
+        user = self.request.user
+        id_number = self.kwargs.get('id_number')
+
+        if user.groups.filter(name='administrator').exists() or user.is_superuser:
+            if id_number:
+                return CustomUser.objects.filter(id_number=id_number)
+            else:
+                return CustomUser.objects.filter(attachement=user.id_number)
+        else:
+            return CustomUser.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("id_number"): 
+            return self.retrieve(request, *args, **kwargs)    
+        else:
+            queryset = self.get_queryset()
+            if queryset.exists():
+                serializer = self.get_serializer(queryset, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
 
         
 
