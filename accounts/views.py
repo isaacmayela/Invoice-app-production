@@ -239,6 +239,9 @@ class AddCollaborators(GenericAPIView):
 
         admin = request.user
 
+        if not admin.groups.filter(name='administrator').exists() or not admin.is_superuser:
+            return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']

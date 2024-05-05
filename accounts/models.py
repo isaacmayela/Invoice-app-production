@@ -21,7 +21,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     username = models.CharField(max_length=200, default="username")
     id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-    created_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name="creator")
+    attachement = models.CharField(max_length=15, default="e310-8f32-425b")
     objects = UserManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
