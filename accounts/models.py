@@ -22,6 +22,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     attachement = models.CharField(max_length=15, default="e310-8f32-425b")
+    user_type = models.CharField(max_length=15, default="collaborator")
     objects = UserManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

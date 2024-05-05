@@ -114,6 +114,7 @@ class RegisterSerializer(serializers.Serializer):
         validated_data['id_number'] = id_number
         attachement = id_number
         validated_data['attachement'] = attachement
+        validated_data['user_type'] = "administrator"
 
         user = CustomUser.objects.create_user(
             **validated_data
