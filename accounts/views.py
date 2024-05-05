@@ -249,7 +249,9 @@ class AddCollaborators(GenericAPIView):
         first_name = serializer.validated_data['first_name']
         last_name = serializer.validated_data['last_name']
 
-        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name, attachement=currentUser.id_number)
+        password = generate_password()
+
+        user = CustomUser.objects.create_user(email=email, password=password, first_name= first_name, last_name= last_name, attachement=currentUser.id_number)
         user.is_active = True
         user.save()
 
@@ -257,8 +259,8 @@ class AddCollaborators(GenericAPIView):
         user.groups.add(group)
 
         confirmation_url = f"""
-                                {currentUser.first_name} {currentUser.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
-        Votre mot de passe temporaire est: {user.password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login
+        {currentUser.first_name} {currentUser.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
+        Votre mot de passe temporaire est: {password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login
                             """
 
         subject = "Email d'invitation"
