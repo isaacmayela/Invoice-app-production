@@ -238,9 +238,9 @@ class AddCollaborators(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
 
-        admin = request.user
+        currentUser = request.user
 
-        if not admin.groups.filter(name='administrator').exists() or not admin.is_superuser:
+        if not currentUser.groups.filter(name='administrator').exists() and not currentUser.is_superuser:
             return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.serializer_class(data=request.data)
@@ -249,7 +249,7 @@ class AddCollaborators(GenericAPIView):
         first_name = serializer.validated_data['first_name']
         last_name = serializer.validated_data['last_name']
 
-        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name, attachement=admin.id_number)
+        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name, attachement=currentUser.id_number)
         user.is_active = True
         user.save()
 
@@ -257,7 +257,7 @@ class AddCollaborators(GenericAPIView):
         user.groups.add(group)
 
         confirmation_url = f"""
-                                {admin.first_name} {admin.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
+                                {currentUser.first_name} {currentUser.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
         Votre mot de passe temporaire est: {user.password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login
                             """
 
