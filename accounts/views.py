@@ -301,7 +301,7 @@ class GetCreatedUsers(GenericAPIView,
     queryset = CustomUser.objects.all()
     serializer_class = CreatedUserSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = "pk"
+    lookup_field = "id_number"
 
 
     # def get_queryset(self):
