@@ -171,3 +171,9 @@ class AddCollaboratorsSerializer(serializers.Serializer):
         if CustomUser.objects.filter(email=value).first():
             raise serializers.ValidationError("An account using this email already exists.")
         return value
+    
+
+class CreatedUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['email','first_name','last_name']

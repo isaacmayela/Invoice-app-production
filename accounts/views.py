@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 # from django.contrib.auth.models import User
 # import jwt, datetime
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import (CustomTokenObtainPairSerializer, RegisterSerializer, EmailConfirmationSerializer, 
+from .serializers import (CreatedUserSerializer, CustomTokenObtainPairSerializer, RegisterSerializer, EmailConfirmationSerializer, 
 RendedEmailConfirmationSerializer, ChangePasswordSerializer, LogoutSerializer, AddCollaboratorsSerializer)
 from .models import EmailConfirmationToken, CustomUser
 from .utils import validate_email_token, generate_password
@@ -245,18 +245,38 @@ class AddCollaborators(GenericAPIView):
         first_name = serializer.validated_data['first_name']
         last_name = serializer.validated_data['last_name']
 
-        user = CustomUser.objects.create(email=email, password=generate_password(), first_name= first_name, last_name= last_name)
+        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name)
         user.is_active = True
         user.save()
 
-        confirmation_url = f"""{admin.first_name} {admin.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
-                               Votre mot de passe temporaire est: {user.password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login"""
+        confirmation_url = f"""
+                                {admin.first_name} {admin.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
+        Votre mot de passe temporaire est: {user.password} veuiller le modifier en suivant ce lien {self.CORS_ORIGINS}/login
+                            """
 
         subject = "Email d'invitation"
 
         user.email_user(subject, confirmation_url, settings.EMAIL_HOST_USER, **kwargs)
 
         return Response({"message": "The account has been successfully registered", "email":user.email}, status=status.HTTP_201_CREATED)
+    
+class GetCreatedUsers():
+    serializer_class = CreatedUserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_users_created_by(self, user):
+        utilisateurs_crees = user.created_users.all()
+        return utilisateurs_crees
+
+    def list(self, request, *args, **kwargs):
+        user = request.user
+
+        if user.groups.filter(name='administrator').exists():
+            utilisateurs_crees = self.get_users_created_by(user)
+            serializer = self.serializer_class(utilisateurs_crees, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
 
         
 
