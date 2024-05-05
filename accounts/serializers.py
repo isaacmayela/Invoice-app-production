@@ -105,7 +105,7 @@ class RegisterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        id_number = validated_data["id_number"]
+        id_number = validated_data.get('id_number')
 
         user = CustomUser.objects.create_user(
             **validated_data
