@@ -89,7 +89,12 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
+    id_number = serializers
     password = serializers.CharField(max_length=80, style={'input_type': 'password'})
+
+    class Meta:
+        model = CustomUser
+        fields = ['email','first_name','last_name', 'id_number', 'password']
 
 
     def validate_email(self, value):
@@ -105,10 +110,14 @@ class RegisterSerializer(serializers.Serializer):
         return value
 
     def create(self, validated_data):
+
+        id_number = validated_data["id_number"]
+
         user = CustomUser.objects.create_user(
             **validated_data
         )
 
+        user.attachement = id_number
         user.is_active = False
         user.save()
 

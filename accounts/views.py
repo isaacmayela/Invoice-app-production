@@ -248,9 +248,12 @@ class AddCollaborators(GenericAPIView):
         first_name = serializer.validated_data['first_name']
         last_name = serializer.validated_data['last_name']
 
-        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name)
+        user = CustomUser.objects.create_user(email=email, password=generate_password(), first_name= first_name, last_name= last_name, attachement=admin.id_number)
         user.is_active = True
         user.save()
+
+        group = Group.objects.get(name='collaborator')
+        user.groups.add(group)
 
         confirmation_url = f"""
                                 {admin.first_name} {admin.last_name} vous a ajouté comme collaborateur avec votre adrèsse mail {user.email} 
