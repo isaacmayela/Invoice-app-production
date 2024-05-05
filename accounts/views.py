@@ -271,7 +271,7 @@ class GetCreatedUsers(ListAPIView):
     def list(self, request, *args, **kwargs):
         user = request.user
 
-        if user.groups.filter(name='administrator').exists():
+        if user.groups.filter(name='administrator').exists() or user.is_superuser:
             utilisateurs_crees = self.get_users_created_by(user)
             serializer = self.serializer_class(utilisateurs_crees, many=True)
             return Response(serializer.data)
