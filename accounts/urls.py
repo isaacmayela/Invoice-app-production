@@ -14,7 +14,7 @@ urlpatterns = [
     path('resend_email/', RendedEmailConfirmationView.as_view(), name='email_resent'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('add_collaborator/', AddCollaborators.as_view(), name='collaborator'),
-    path('get_collaborators/', GetCreatedUsers.as_view(), name='collaborator'),
+    path('get_collaborators/<str:id_number>/', GetCreatedUsers.as_view(), name='collaborator'),
 #     # path('user/', UserDetailsView.as_view(), name='user_details'),
     path('password/change/', ChangePasswordAPIView.as_view(), name='password_change'),
 ]

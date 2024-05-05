@@ -186,4 +186,4 @@ class AddCollaboratorsSerializer(serializers.Serializer):
 class CreatedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email','first_name','last_name']
+        fields = ['email','first_name','last_name', 'id_number']
