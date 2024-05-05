@@ -85,6 +85,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
+    access = serializers.CharField()
 
 def generate_id_number():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
