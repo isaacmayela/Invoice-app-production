@@ -84,7 +84,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
         
-class RegisterSerializer(serializers.Serializer):
+class RegisterSerializer(serializers.ModelSerializer):
     # username = serializers.CharField(max_length=100)
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
