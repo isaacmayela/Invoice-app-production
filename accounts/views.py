@@ -271,32 +271,32 @@ class AddCollaborators(GenericAPIView):
 
         return Response({"message": "The account has been successfully registered", "email":user.email}, status=status.HTTP_201_CREATED)
     
-class GetCreatedUsers(ListAPIView):
-    serializer_class = CreatedUserSerializer
-    permission_classes = [IsAuthenticated]
+# class GetCreatedUsers(ListAPIView):
+#     serializer_class = CreatedUserSerializer
+#     permission_classes = [IsAuthenticated]
 
-    def get_users_created_by(self, user):
-        utilisateurs_crees = user.created_users.all()
-        return utilisateurs_crees
+#     def get_users_created_by(self, user):
+#         utilisateurs_crees = user.created_users.all()
+#         return utilisateurs_crees
 
-    def list(self, request, *args, **kwargs):
-        user = request.user
+#     def list(self, request, *args, **kwargs):
+#         user = request.user
 
-        if user.groups.filter(name='administrator').exists() or user.is_superuser:
-            utilisateurs_crees = self.get_users_created_by(user)
-            serializer = self.serializer_class(utilisateurs_crees, many=True)
-            return Response(serializer.data)
-        else:
-            return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
+#         if user.groups.filter(name='administrator').exists() or user.is_superuser:
+#             utilisateurs_crees = self.get_users_created_by(user)
+#             serializer = self.serializer_class(utilisateurs_crees, many=True)
+#             return Response(serializer.data)
+#         else:
+#             return Response({"message": "You do not have the necessary authorizations."}, status=status.HTTP_403_FORBIDDEN)
         
 
-class CompanyView(GenericAPIView,
+class GetCreatedUsers(GenericAPIView,
     mixins.ListModelMixin,mixins.DestroyModelMixin, mixins.RetrieveModelMixin):
     
-    queryset = CustomUser.objects.all()
-    # serializer_class = CompanySerializer
-    permission_classes = [IsAuthenticated]
-    lookup_field = "pk"
+    # queryset = CustomUser.objects.all()
+    # # serializer_class = CompanySerializer
+    # permission_classes = [IsAuthenticated]
+    # lookup_field = "pk"
 
     queryset = CustomUser.objects.all()
     serializer_class = CreatedUserSerializer
