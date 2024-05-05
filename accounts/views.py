@@ -1,5 +1,5 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 # from rest_framework.authtoken.models import Token
@@ -260,7 +260,7 @@ class AddCollaborators(GenericAPIView):
 
         return Response({"message": "The account has been successfully registered", "email":user.email}, status=status.HTTP_201_CREATED)
     
-class GetCreatedUsers():
+class GetCreatedUsers(ListAPIView):
     serializer_class = CreatedUserSerializer
     permission_classes = [IsAuthenticated]
 

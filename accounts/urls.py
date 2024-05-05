@@ -3,7 +3,7 @@ from django.urls import path
 #     LoginView, RegisterView, EmailConfirmationView, RendedEmailConfirmationView, CustomTokenObtainPairView
 # )
 
-from accounts.views import LoginView, RegisterView, EmailConfirmationView,RendedEmailConfirmationView, ChangePasswordAPIView, LogoutView, AddCollaborators
+from accounts.views import LoginView, RegisterView, EmailConfirmationView,RendedEmailConfirmationView, ChangePasswordAPIView, LogoutView, AddCollaborators, GetCreatedUsers
 
 urlpatterns = [
     # path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
@@ -14,6 +14,7 @@ urlpatterns = [
     path('resend_email/', RendedEmailConfirmationView.as_view(), name='email_resent'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('add_collaborator/', AddCollaborators.as_view(), name='collaborator'),
+    path('get_collaborators/', GetCreatedUsers.as_view(), name='collaborator'),
 #     # path('user/', UserDetailsView.as_view(), name='user_details'),
     path('password/change/', ChangePasswordAPIView.as_view(), name='password_change'),
 ]
