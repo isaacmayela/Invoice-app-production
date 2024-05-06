@@ -44,15 +44,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        fields = ('name', 'email', 'phone', 'adress', 'state', 'country', 'city', 'type', 'services')
-
-    def get_fields(self):
-        fields = super().get_fields()
-        model_fields = self.Meta.model._meta.fields
-        for field in model_fields:
-            if field.name not in fields:
-                fields[field.name] = serializers.CharField()
-        return fields
+        fields = '__all__'
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
