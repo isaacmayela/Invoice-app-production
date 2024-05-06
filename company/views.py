@@ -14,7 +14,7 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
     
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    lookup_field = "pk"
+    lookup_field = "id_number"
 
     def perform_create(self, serializer):
         # serializer.save(save_by=self.request.user)
@@ -26,10 +26,10 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
         return Company.objects.filter(users=user)
 
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
+        pk = kwargs.get("id_number")
 
         if pk is not None:  
-            return self.retrieve(request, *args, **kwargs)    
+            return Company.objects.filter(id_number=pk).first()   
          
         return self.list(request, *args, **kwargs)
     
