@@ -33,6 +33,23 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
          
         return self.list(request, *args, **kwargs)
     
+    def list(self, request, *args, **kwargs):
+        companies = self.get_queryset()
+        data = []
+        
+        for company in companies:
+            paid_invoices = company.invoices.filter(paid=True).count()
+            unpaid_invoices = company.invoices.filter(paid=False).count()
+            
+            serializer = self.get_serializer(company)
+            company_data = serializer.data
+            company_data["paid_invoices"] = paid_invoices
+            company_data["unpaid_invoices"] = unpaid_invoices
+            
+            data.append(company_data)
+        
+        return Response(data)
+    
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
     
