@@ -97,3 +97,8 @@ class AllInvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['customer'] = CustomerSerializer(instance.customer).data
+        return rep
