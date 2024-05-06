@@ -127,3 +127,20 @@ class InvoiceView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
     
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+    
+
+
+class GetAllInvoices(EditorPermissionsMixins,
+    mixins.ListModelMixin):
+    
+    queryset = Invoice.objects.all()
+    lookup_field = "pk"
+
+    def get_queryset(self):
+        user = self.request.user
+        return Invoice.objects.filter(save_by=user)
+        
+    
+    def get(self, request, *args, **kwargs):       
+        return self.list(request, *args, **kwargs)
+    
