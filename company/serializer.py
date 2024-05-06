@@ -10,12 +10,11 @@ class CompanySerializer(serializers.ModelSerializer):
     adress = serializers.CharField()
     country = serializers.CharField()
     city = serializers.CharField()
-    id_number = serializers.CharField()
     state = serializers.CharField()
     services = serializers.CharField()
     class Meta:
         model = Company
-        fields = ('name', 'email', 'phone', 'adress', 'country', 'city', 'state', 'services', 'id_number')
+        fields = ('name', 'email', 'phone', 'adress', 'country', 'city', 'state', 'services')
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
