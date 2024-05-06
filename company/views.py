@@ -38,8 +38,8 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
         data = []
         
         for company in companies:
-            paid_invoices = company.invoices.filter(paid=True).count()
-            unpaid_invoices = company.invoices.filter(paid=False).count()
+            paid_invoices = Invoice.objects.filter(company=company,paid=True).count()
+            unpaid_invoices = Invoice.objects.filter(company=company,paid=False).count()
             
             serializer = self.get_serializer(company)
             company_data = serializer.data
