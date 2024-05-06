@@ -40,11 +40,19 @@ class CustomerSerializer(serializers.ModelSerializer):
     city = serializers.CharField(max_length=100)
     state = serializers.CharField(max_length=100, default="Kinshasa")
     type = serializers.CharField(max_length=30)
-    id_number = serializers.CharField()
     services = serializers.CharField(max_length=300)
+
     class Meta:
         model = Company
-        fields = ('name', 'email', 'phone', 'adress', 'state', 'country', 'city', 'type', 'services', 'id_number')
+        fields = ('name', 'email', 'phone', 'adress', 'state', 'country', 'city', 'type', 'services')
+
+    def get_fields(self):
+        fields = super().get_fields()
+        model_fields = self.Meta.model._meta.fields
+        for field in model_fields:
+            if field.name not in fields:
+                fields[field.name] = serializers.CharField()
+        return fields
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
