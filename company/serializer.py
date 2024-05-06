@@ -63,15 +63,15 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(max_length=132)
-    email = serializers.EmailField()
-    phone = serializers.CharField(max_length=132)
-    adress = serializers.CharField(max_length=255)
-    country = serializers.CharField(max_length=100)
-    city = serializers.CharField(max_length=100)
-    state = serializers.CharField(max_length=100, default="Kinshasa")
-    type = serializers.CharField(max_length=30)
-    services = serializers.CharField(max_length=300)
+    # customer = serializers.CharField(max_length=132)
+    # email = serializers.EmailField()
+    # phone = serializers.CharField(max_length=132)
+    # adress = serializers.CharField(max_length=255)
+    # country = serializers.CharField(max_length=100)
+    # city = serializers.CharField(max_length=100)
+    # state = serializers.CharField(max_length=100, default="Kinshasa")
+    # type = serializers.CharField(max_length=30)
+    # services = serializers.CharField(max_length=300)
 
     class Meta:
         model = Invoice
