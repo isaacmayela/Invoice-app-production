@@ -1,4 +1,4 @@
-from .models import Company
+from .models import Company, Customer, Invoice, Article
 from rest_framework import serializers
 from .validators import FieldsValidators
 
@@ -43,7 +43,7 @@ class CustomerSerializer(serializers.ModelSerializer):
     services = serializers.CharField(max_length=300)
 
     class Meta:
-        model = Company
+        model = Customer
         fields = '__all__'
 
     def update(self, instance, validated_data):
