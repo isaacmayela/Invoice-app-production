@@ -149,7 +149,7 @@ class InvoiceView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
             invoice.delete()
             return Response({'message': 'Invoice deleted successfuly'}, status=status.HTTP_204_NO_CONTENT)
         except Invoice.DoesNotExist:
-            return Response({'message': 'Facture non trouvée'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'Invoice not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
