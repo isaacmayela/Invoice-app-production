@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import  generics, mixins
 from .models import Company, Customer
-from .serializer import CompanySerializer
+from .serializer import CompanySerializer, CustomerSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from accounts.permissions import EditorPermissionsMixins
 
@@ -47,8 +47,8 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
 class CustomerView(EditorPermissionsMixins, generics.GenericAPIView, mixins.CreateModelMixin, mixins.UpdateModelMixin, 
     mixins.ListModelMixin,mixins.DestroyModelMixin, mixins.RetrieveModelMixin):
     
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
     lookup_field = "pk"
 
     def perform_create(self, serializer):
