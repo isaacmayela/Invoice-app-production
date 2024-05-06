@@ -25,12 +25,18 @@ class CompanyView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
         user = self.request.user
         return Company.objects.filter(users=user)
 
+    
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get("id_number")
+        id_number = kwargs.get("id_number")
 
-        if pk is not None:  
-            return Company.objects.filter(id_number=pk).first()   
-         
+        if id_number is not None:
+            company = Company.objects.filter(id_number=id_number).first()
+            if company:
+                serializer = self.get_serializer(company)
+                return Response(serializer.data)
+            else:
+                return Response({"message": "Company not found"}, status=404)
+
         return self.list(request, *args, **kwargs)
     
     def list(self, request, *args, **kwargs):
