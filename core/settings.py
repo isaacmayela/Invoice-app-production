@@ -42,7 +42,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
-    config("CORS_ORIGINS"),
+    config("CORS_ORIGINS"), "http://localhost:5173/"
 # "http://localhost:5173/",
 # "http://127.0.0.1:5173/"
 ]
