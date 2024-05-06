@@ -98,17 +98,13 @@ class InvoiceView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
         inv_id_number = self.kwargs.get('inv_id_number')
 
         if inv_id_number:
-            invoice = Invoice.objects.filter(id_number=inv_id_number).first()
-            if invoice:
-                return Invoice.objects.filter(id_number=inv_id_number)
-            else:
-                return Invoice.objects.none()
+            return Invoice.objects.filter(id_number=inv_id_number)
         else:
             try:
                 company = Company.objects.get(id_number=cmp_id_number)
                 return Invoice.objects.filter(company=company)
             except Company.DoesNotExist:
-                return Response({'message': 'This number is invalid'}, status=status.HTTP_400_BAD_REQUEST)
+                return Invoice.objects.none()
         
     
 
