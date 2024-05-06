@@ -90,3 +90,10 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     def delete(self, instance):
         instance.delete()
+
+
+class AllInvoiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invoice
+        fields = '__all__'
