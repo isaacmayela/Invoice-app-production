@@ -107,3 +107,6 @@ class AllInvoiceSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         rep['customer'] = CustomerSerializer(instance.customer).data
         return rep
+
+class AddInvoiceSerializer(serializers.Serializer):
+    pass
