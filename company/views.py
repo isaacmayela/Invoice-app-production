@@ -79,8 +79,23 @@ class CustomerView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Crea
     def perform_create(self, serializer):
         serializer.save(save_by=self.request.user)
 
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Customer.objects.filter(save_by=user)
+    
     def get_queryset(self):
         user = self.request.user
+        cmp_id_number = self.kwargs.get('cmp_id_number')
+        ctm_id_number = self.kwargs.get('ctm_id_number')
+
+        if ctm_id_number:
+            return Customer.objects.filter(id_number=ctm_id_number).first()
+        elif cmp_id_number and not ctm_id_number:
+            try:
+                company = Company.objects.get(id_number=cmp_id_number)
+                return Customer.objects.filter(company=company)
+            except Company.DoesNotExist:
+                return Customer.objects.none()
         return Customer.objects.filter(save_by=user)
 
     def get(self, request, *args, **kwargs):
