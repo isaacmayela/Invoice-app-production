@@ -119,7 +119,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     
 
 
-class InvoiceSerializer(serializers.Serializer):
+class AddInvoiceSerializer(serializers.Serializer):
     articles = ArticleSerializer(many=True)  # Serializer pour les articles
     concern = serializers.CharField(max_length=250)
     client = serializers.CharField(max_length=250)
