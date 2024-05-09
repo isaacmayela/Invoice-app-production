@@ -107,6 +107,34 @@ class AllInvoiceSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         rep['customer'] = CustomerSerializer(instance.customer).data
         return rep
+    
 
-class AddInvoiceSerializer(serializers.Serializer):
-    pass
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+
+    
+
+
+class InvoiceSerializer(serializers.Serializer):
+    articles = ArticleSerializer(many=True)  # Serializer pour les articles
+    concern = serializers.CharField(max_length=250)
+    client = serializers.CharField(max_length=250)
+    total = serializers.FloatField()
+
+
+    class Meta:
+        model = Invoice
+        fields = '__all__'
+
+    def create(self, validated_data):
+        articles_data = validated_data.pop('articles')
+        invoice = Invoice.objects.create(**validated_data)
+
+        for article_data in articles_data:
+            Article.objects.create(invoice=invoice, **article_data)
+
+        return invoice
