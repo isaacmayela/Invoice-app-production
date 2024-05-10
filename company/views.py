@@ -191,7 +191,9 @@ class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView,
     
 
 class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView):
+    queryset = Invoice.objects.all()
     serializer_class = AddInvoiceSerializer
+    
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
 
