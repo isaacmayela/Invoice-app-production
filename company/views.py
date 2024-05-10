@@ -193,9 +193,10 @@ class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView,
 class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView):
     queryset = Invoice.objects.all()
     serializer_class = AddInvoiceSerializer
-    
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'save_by': request.user})
 
         if serializer.is_valid():
             serializer.save()

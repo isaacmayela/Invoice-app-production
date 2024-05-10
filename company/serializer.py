@@ -147,7 +147,7 @@ class AddInvoiceSerializer(serializers.Serializer):
         invoice = Invoice.objects.create(
             customer=customer,
             concern = concern,
-            save_by = user,
+            # save_by = user,
             total = total,
             company = company
         )
