@@ -126,11 +126,6 @@ class AddInvoiceSerializer(serializers.Serializer):
     company = serializers.CharField(max_length=250)
     total = serializers.FloatField()
 
-
-    class Meta:
-        model = Invoice
-        fields = '__all__'
-
     def create(self, validated_data):
         articles_data = validated_data.pop('articles')
         client_id = validated_data['client']
