@@ -114,7 +114,7 @@ class AllInvoiceSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ['name', 'unity', 'quantity', 'unit_price', 'total', 'details']
 
     
 
