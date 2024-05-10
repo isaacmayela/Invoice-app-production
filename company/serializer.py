@@ -15,7 +15,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        fields = '__all__'
+        fields = ["name", "email", "phone", "adress", "country", "city", "state", "services"]
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -24,6 +24,7 @@ class CompanySerializer(serializers.ModelSerializer):
         instance.adress = validated_data.get('adress', instance.adress)
         instance.country = validated_data.get('country', instance.country)
         instance.city = validated_data.get('city', instance.city)
+        instance.state = validated_data.get('city', instance.state)
         instance.services = validated_data.get('services', instance.services)
         instance.save()
         return instance
