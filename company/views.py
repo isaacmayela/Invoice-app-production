@@ -112,8 +112,14 @@ class CustomerView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Crea
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
     
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        id_number = kwargs.get('id_number')
+        try:
+            company = Company.objects.get(id_number=id_number)
+            company.delete()
+            return Response({'message': 'Company deleted successfuly'}, status=status.HTTP_204_NO_CONTENT)
+        except Invoice.DoesNotExist:
+            return Response({'message': 'Company not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)

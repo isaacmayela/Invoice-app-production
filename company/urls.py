@@ -5,6 +5,7 @@ from company.views import CompanyView, CustomerView, InvoiceView, GetAllInvoices
 urlpatterns = [
     path('informations/', CompanyView.as_view(), name='company'),
     path('informations/<str:id_number>', CompanyView.as_view(), name='company'),
+    path('company/delete/<str:id_number>/', CompanyView.as_view(), name='company-delete'),
     path('customers/', CustomerView.as_view(), name='company'),
     path('<str:cmp_id_number>/customers/', CustomerView.as_view(), name='customers'),
     path('customers/<str:cmp_id_number>/customers/<str:ctm_id_number>/', CustomerView.as_view(), name='customers'),
