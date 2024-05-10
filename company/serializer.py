@@ -132,7 +132,6 @@ class AddInvoiceSerializer(serializers.Serializer):
         concern = validated_data['concern']
         total = validated_data['total']
         company_id = validated_data['company']
-        user = self.context['request'].user
 
         try:
             company = Company.objects.get(id_number=company_id)
