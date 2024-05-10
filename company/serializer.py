@@ -133,19 +133,19 @@ class AddInvoiceSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         articles_data = validated_data.pop('articles')
-        id_number = validated_data("client")
-        concern = validated_data("concern")
-        total = validated_data("total")
-        company = validated_data("company")
+        client_id = validated_data['client']
+        concern = validated_data['concern']
+        total = validated_data['total']
+        company_id = validated_data['company']
         user = self.context['request'].user
 
         try:
-            company = Company.objects.get(id_number=company)
+            company = Company.objects.get(id_number=company_id)
         except Company.DoesNotExist:
             raise serializers.ValidationError("Company not found.")
         
         try:
-            customer = Customer.objects.get(id_number=id_number)
+            customer = Customer.objects.get(id_number=client_id)
         except Customer.DoesNotExist:
             raise serializers.ValidationError("Customer not found.")
         
