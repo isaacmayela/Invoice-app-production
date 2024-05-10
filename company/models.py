@@ -83,7 +83,7 @@ class Invoice(models.Model):
 
 class Article(models.Model):
 
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoice, related_name='articles', on_delete=models.CASCADE)
     details = models.CharField(max_length=60, default="nothing")
     unity = models.CharField(max_length=10)
     name = models.CharField(max_length=32)
