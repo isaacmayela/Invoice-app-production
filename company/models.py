@@ -51,7 +51,7 @@ class Customer(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
     id_number = models.CharField(max_length=15, unique=True, default="", editable=False)
-    save_by = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
+    save_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     class Meta:
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
