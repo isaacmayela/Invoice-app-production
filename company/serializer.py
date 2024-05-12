@@ -71,7 +71,7 @@ class CustomerSerializer(serializers.Serializer):
             state = state,
             services = services,
             company = company,
-            # save_by = self.context['save_by'],s
+            save_by = self.context.get('request').user,
         )
 
         return customer
