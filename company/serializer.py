@@ -151,13 +151,13 @@ class ArticleSerializer(serializers.ModelSerializer):
 class AddInvoiceSerializer(serializers.Serializer):
     articles = ArticleSerializer(many=True)  # Serializer pour les articles
     concern = serializers.CharField(max_length=250)
-    client = serializers.CharField(max_length=250)
+    customer = serializers.CharField(max_length=250)
     company = serializers.CharField(max_length=250)
     total = serializers.FloatField()
 
     def create(self, validated_data):
         articles_data = validated_data.pop('articles')
-        client = validated_data['client']
+        customer = validated_data['client']
         concern = validated_data['concern']
         total = validated_data['total']
         company_id = validated_data['company']
@@ -168,7 +168,7 @@ class AddInvoiceSerializer(serializers.Serializer):
             raise serializers.ValidationError("Company not found.")
         
         try:
-            customer = Customer.objects.get(id_number=client)
+            customer = Customer.objects.get(id_number=customer)
         except Customer.DoesNotExist:
             raise serializers.ValidationError("Customer not found.")
         

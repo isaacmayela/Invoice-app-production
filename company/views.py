@@ -180,8 +180,7 @@ class InvoiceView(EditorPermissionsMixins, generics.GenericAPIView, mixins.Creat
     
 
 
-class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView,
-    mixins.ListModelMixin):
+class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.ListModelMixin):
     
     queryset = Invoice.objects.all()
     serializer_class = AllInvoiceSerializer
