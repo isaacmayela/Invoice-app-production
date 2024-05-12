@@ -44,9 +44,6 @@ class CustomerSerializer(serializers.Serializer):
     services = serializers.CharField(max_length=300)
     company_id_number = serializers.CharField(max_length=300)
 
-    class Meta:
-        model = Customer
-        fields = '__all__'
 
     def create(self, validated_data):
         name = validated_data['name']
