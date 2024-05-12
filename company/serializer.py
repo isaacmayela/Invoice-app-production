@@ -74,19 +74,19 @@ class CustomerSerializer(serializers.Serializer):
             save_by = self.context['save_by'],
         )
 
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.email = validated_data.get('email', instance.email)
-        instance.phone = validated_data.get('phone', instance.phone)
-        instance.adress = validated_data.get('adress', instance.adress)
-        instance.country = validated_data.get('country', instance.country)
-        instance.city = validated_data.get('city', instance.city)
-        instance.services = validated_data.get('services', instance.services)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.email = validated_data.get('email', instance.email)
+    #     instance.phone = validated_data.get('phone', instance.phone)
+    #     instance.adress = validated_data.get('adress', instance.adress)
+    #     instance.country = validated_data.get('country', instance.country)
+    #     instance.city = validated_data.get('city', instance.city)
+    #     instance.services = validated_data.get('services', instance.services)
+    #     instance.save()
+    #     return instance
 
-    def delete(self, instance):
-        instance.delete()
+    # def delete(self, instance):
+    #     instance.delete()
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
