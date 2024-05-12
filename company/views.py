@@ -204,6 +204,9 @@ class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView,  mixins.C
     def perform_create(self, serializer):
         serializer.save(save_by=self.request.user)
 
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
     # def post(self, request, format=None):
     #     serializer = self.serializer_class(data=request.data, context={'save_by': request.user})
 
