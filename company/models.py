@@ -5,8 +5,8 @@ from accounts.models import CustomUser
 import random
 import string
 
-def generate_id_number():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+# def generate_id_number():
+#     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
 
 class Company(models.Model):
     
@@ -47,17 +47,25 @@ class Customer(models.Model):
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100, default="Kinshasa")
-    type =models.CharField(max_length=30)
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
-    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
+    id_number = models.CharField(max_length=15, unique=True, default="", editable=False)
     save_by = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
     class Meta:
         verbose_name = "Customer"
         verbose_name_plural = "Customers"
+
     def __str__(self):
         return self.name
+    
+    def generate_id_number(self):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+    
+    def save(self, *args, **kwargs):
+        if not self.id_number:
+            self.id_number = self.generate_id_number()
+        super(Company, self).save(*args, **kwargs)
 
 
 class Invoice(models.Model):
@@ -75,7 +83,7 @@ class Invoice(models.Model):
     last_updated_date = models.DateTimeField(null=True, blank=True)
     paid  = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
-    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
+    id_number = models.CharField(max_length=15, unique=True, default="")
     comments = models.TextField(null=True, max_length=1000, blank=True)
 
     class Meta:
@@ -84,6 +92,16 @@ class Invoice(models.Model):
 
     def __str__(self):
            return f"{self.customer.name}_{self.invoice_date_time}"
+    
+    def save(self, *args, **kwargs):
+        if not self.id_number:
+            self.id_number = self.generate_id_number()
+        super(Company, self).save(*args, **kwargs)
+
+    def generate_id_number(self):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+
+    
 
     @property
     def get_total(self):
@@ -99,7 +117,7 @@ class Article(models.Model):
     name = models.CharField(max_length=32)
     quantity = models.IntegerField()
     unit_price = models.FloatField()
-    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
+    id_number = models.CharField(max_length=15, unique=True, default="")
     total = models.FloatField()
 
     class Meta:
@@ -110,4 +128,12 @@ class Article(models.Model):
     def get_total(self):
         total = self.quantity * self.unit_price 
         return total
+    
+    def save(self, *args, **kwargs):
+        if not self.id_number:
+            self.id_number = self.generate_id_number()
+        super(Company, self).save(*args, **kwargs)
+
+    def generate_id_number(self):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
     

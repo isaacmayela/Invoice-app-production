@@ -12,14 +12,14 @@ import string
 
 # Create your models here.
 
-def generate_id_number():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+# def generate_id_number():
+#     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
 
 class CustomUser(AbstractUser, PermissionsMixin):
 
     email = models.EmailField(_("email address"), unique=True)
     username = models.CharField(max_length=200, default="username")
-    id_number = models.CharField(max_length=15, unique=True, default=generate_id_number())
+    id_number = models.CharField(max_length=15, unique=True, default="")
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     attachement = models.CharField(max_length=15, default="e310-8f32-425b")
     user_type = models.CharField(max_length=15, default="collaborator")
@@ -54,26 +54,27 @@ class CustomUser(AbstractUser, PermissionsMixin):
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name
     
+    def save(self, *args, **kwargs):
+        if not self.id_number:
+            self.id_number = self.generate_id_number()
+        super(CustomUser, self).save(*args, **kwargs)
+
+    def generate_id_number(self):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
+    
     # def __str__(self):
     #     return self.email
 
-# class Patron(Group):
+# class Administrator(Group):
 #     class Meta:
 #         verbose_name = _('Patron')
 #         verbose_name_plural = _('Patrons')
 
-# class Employee(Group):
+# class Collaborators(Group):
 #     class Meta:
 #         verbose_name = _('Employee')
 #         verbose_name_plural = _('Employees')
 
-
-# class EmailConfirmationProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     is_email_confirmed = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return self.user.username
 
 class EmailConfirmationToken(models.Model):
     TOKEN_TYPES = (
