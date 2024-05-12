@@ -33,7 +33,7 @@ class CompanySerializer(serializers.ModelSerializer):
         instance.delete()
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=132)
     email = serializers.EmailField()
     phone = serializers.CharField(max_length=132)
@@ -42,10 +42,40 @@ class CustomerSerializer(serializers.ModelSerializer):
     city = serializers.CharField(max_length=100)
     state = serializers.CharField(max_length=100, default="Kinshasa")
     services = serializers.CharField(max_length=300)
+    company_id_number = serializers.CharField(max_length=300)
 
     class Meta:
         model = Customer
         fields = '__all__'
+
+    def create(self, validated_data):
+        name = validated_data['name']
+        email = validated_data['email']
+        phone = validated_data['phone']
+        adress = validated_data['adress']
+        country = validated_data["country"]
+        city = validated_data["city"]
+        state = validated_data["state"]
+        services = validated_data["services"]
+        company_id_number = validated_data["id_number"]
+
+        try:
+            company = Company.objects.get(id_number=company_id_number)
+        except Company.DoesNotExist:
+            raise serializers.ValidationError("Company not found.")
+        
+        customer = Customer.objects.create(
+            name = name,
+            email = email,
+            phone = phone,
+            adress = adress,
+            country = country,
+            city = city,
+            state = state,
+            services = services,
+            company = company,
+            save_by = self.context['save_by'],
+        )
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
