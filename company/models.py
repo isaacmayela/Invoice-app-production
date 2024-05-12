@@ -19,13 +19,18 @@ class Company(models.Model):
     state = models.CharField(max_length=100, default="Kinshasa")
     services = models.CharField(max_length=300)
     created_date = models.DateTimeField(auto_now_add=True)
-    id_number = models.CharField(max_length=15, unique=True, default="")
+    id_number = models.CharField(max_length=15, unique=True, default="", editable=False)
     save_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_models')
     users = models.ManyToManyField(CustomUser, related_name='related_models')
 
     class Meta:
         verbose_name = "Company"
         verbose_name_plural = "Companies"
+
+    def save(self, *args, **kwargs):
+        if not self.id_number:
+            self.id_number = self.generate_id_number()
+        super(Company, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
