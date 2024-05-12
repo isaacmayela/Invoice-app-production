@@ -157,7 +157,7 @@ class AddInvoiceSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         articles_data = validated_data.pop('articles')
-        customer = validated_data['client']
+        customer = validated_data['customer']
         concern = validated_data['concern']
         total = validated_data['total']
         company_id = validated_data['company']
