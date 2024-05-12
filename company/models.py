@@ -65,7 +65,7 @@ class Customer(models.Model):
     def save(self, *args, **kwargs):
         if not self.id_number:
             self.id_number = self.generate_id_number()
-        super(Company, self).save(*args, **kwargs)
+        super(Customer, self).save(*args, **kwargs)
 
 
 class Invoice(models.Model):
@@ -96,7 +96,7 @@ class Invoice(models.Model):
     def save(self, *args, **kwargs):
         if not self.id_number:
             self.id_number = self.generate_id_number()
-        super(Company, self).save(*args, **kwargs)
+        super(Invoice, self).save(*args, **kwargs)
 
     def generate_id_number(self):
         return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
@@ -132,7 +132,7 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.id_number:
             self.id_number = self.generate_id_number()
-        super(Company, self).save(*args, **kwargs)
+        super(Article, self).save(*args, **kwargs)
 
     def generate_id_number(self):
         return ''.join(random.choices(string.ascii_lowercase + string.digits, k=15))
