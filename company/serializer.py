@@ -41,7 +41,6 @@ class CustomerSerializer(serializers.ModelSerializer):
     country = serializers.CharField(max_length=100)
     city = serializers.CharField(max_length=100)
     state = serializers.CharField(max_length=100, default="Kinshasa")
-    type = serializers.CharField(max_length=30)
     services = serializers.CharField(max_length=300)
 
     class Meta:
