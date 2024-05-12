@@ -42,7 +42,7 @@ class CustomerSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=100)
     state = serializers.CharField(max_length=100, default="Kinshasa")
     services = serializers.CharField(max_length=300)
-    company_id_number = serializers.CharField(max_length=300)
+    id_number = serializers.CharField(max_length=300)
 
 
     def create(self, validated_data):
@@ -54,10 +54,10 @@ class CustomerSerializer(serializers.Serializer):
         city = validated_data["city"]
         state = validated_data["state"]
         services = validated_data["services"]
-        company_id_number = validated_data["id_number"]
+        id_number = validated_data["id_number"]
 
         try:
-            company = Company.objects.get(id_number=company_id_number)
+            company = Company.objects.get(id_number=id_number)
         except Company.DoesNotExist:
             raise serializers.ValidationError("Company not found.")
         
