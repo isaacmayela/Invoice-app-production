@@ -197,7 +197,7 @@ class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView,
     
 
 class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView,  mixins.CreateModelMixin):
-    queryset = Invoice.objects.all()
+    # queryset = Invoice.objects.all()
     serializer_class = AddInvoiceSerializer
     permission_classes = [IsAuthenticated]
 
