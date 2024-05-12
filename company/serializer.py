@@ -176,7 +176,7 @@ class AddInvoiceSerializer(serializers.Serializer):
             customer=customer,
             concern = concern,
             # save_by = user,
-            save_by = self.context.get('request').user,
+            # save_by = self.context.get('request').user,
             total = total,
             company = company
         )
