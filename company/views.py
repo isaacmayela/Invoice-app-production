@@ -196,16 +196,19 @@ class GetAllInvoices(EditorPermissionsMixins, generics.GenericAPIView,
         return self.list(request, *args, **kwargs)
     
 
-class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView):
+class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView,  mixins.CreateModelMixin):
     queryset = Invoice.objects.all()
     serializer_class = AddInvoiceSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.data, context={'save_by': request.user})
+    def perform_create(self, serializer):
+        serializer.save(save_by=self.request.user)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # def post(self, request, format=None):
+    #     serializer = self.serializer_class(data=request.data, context={'save_by': request.user})
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
