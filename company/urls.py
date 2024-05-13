@@ -14,5 +14,5 @@ urlpatterns = [
     path('invoice/delete/<str:id_number>/', InvoiceView.as_view(), name='invoice-delete'),
     path('all_invoices/', GetAllInvoices.as_view(), name='company'),
     path('add_invoices/', AddInvoiceView.as_view(), name='add_invoice'),
-    path('get_invoice/<id_number>', InvoiceInfosView.as_view(), name='add_invoice'),
+    path('get_invoice/<str:id_number>', InvoiceInfosView.as_view(), name='add_invoice'),
 ]
