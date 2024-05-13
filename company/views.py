@@ -228,3 +228,6 @@ class InvoiceInfosView(EditorPermissionsMixins, generics.GenericAPIView, mixins.
             return invoice
         except Invoice.DoesNotExist:
             return Invoice.objects.none()
+        
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
