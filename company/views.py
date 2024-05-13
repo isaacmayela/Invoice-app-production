@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import  generics, mixins
 from .models import Company, Customer, Invoice, Article
-from .serializer import CompanySerializer, CustomerSerializer, InvoiceSerializer, AllInvoiceSerializer, AddInvoiceSerializer
+from .serializer import CompanySerializer, CustomerSerializer, InvoiceSerializer, AllInvoiceSerializer, AddInvoiceSerializer, GetInvoiceInfosSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from accounts.permissions import EditorPermissionsMixins
 from rest_framework import status
@@ -218,7 +218,7 @@ class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView,  mixins.C
 class InvoiceInfosView(EditorPermissionsMixins, generics.GenericAPIView, mixins.RetrieveModelMixin):
 
     queryset = Invoice.objects.all()
-    serializer_class = InvoiceSerializer
+    serializer_class = GetInvoiceInfosSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = "id_number"
 

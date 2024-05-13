@@ -186,7 +186,7 @@ class AddInvoiceSerializer(serializers.Serializer):
 
         return invoice
 
-class GetInvoiceInfos(serializers.ModelSerializer):
+class GetInvoiceInfosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         fields = '__all__'
