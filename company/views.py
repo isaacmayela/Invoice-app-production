@@ -220,10 +220,11 @@ class InvoiceInfosView(EditorPermissionsMixins, generics.GenericAPIView, mixins.
     queryset = Invoice.objects.all()
     serializer_class = GetInvoiceInfosSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = "id_number"
+    lookup_field = "pk"
 
     def get_queryset(self):
         id_number = self.kwargs.get('id_number')
+        print(id_number)
         try:
             invoice = Invoice.objects.get(id_number=id_number)
             return invoice
