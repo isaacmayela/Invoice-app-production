@@ -214,3 +214,16 @@ class AddInvoiceView(EditorPermissionsMixins, generics.GenericAPIView,  mixins.C
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class InvoiceInfosView(EditorPermissionsMixins, generics.GenericAPIView, mixins.RetrieveModelMixin):
+
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+
+    def get_queryset(self):
+        id_number = self.kwargs.get('id_number')
+        try:
+            invoice = Invoice.objects.get(id_number=id_number)
+            return invoice
+        except Invoice.DoesNotExist:
+            return Invoice.objects.none()

@@ -185,3 +185,14 @@ class AddInvoiceSerializer(serializers.Serializer):
             Article.objects.create(invoice=invoice, **article_data)
 
         return invoice
+
+class GetInvoiceInfos(serializers.ModelSerializer):
+    class Meta:
+        model = Invoice
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['customer'] = CustomerSerializer(instance.customer).data
+        rep['company'] = CompanySerializer(instance.company).data
+        return rep
